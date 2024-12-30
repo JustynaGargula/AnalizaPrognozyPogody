@@ -1,0 +1,10 @@
+# Bash
+1. Napisać parametr help
+2. Napisać getopt
+3. Dodać pobieranie danych z API
+
+# Perl
+1.
+
+--- # Do zrobienia później
+1. Uaktualnić parametr help
