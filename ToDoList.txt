@@ -1,10 +1,11 @@
 # Bash
-- Dodać pobieranie danych z API (uwzględniić parametry)
-- Zrobić zapisywanie do pliku (uwzględniić różne formaty)
-- Zapisać kilka wybranych lokalizacji (zapisać współrzędne dla kilku miast)
+- Dorobić pobieranie Weather code i dodanie odpowiednich informacji do raportu.
+- Rozpisać w help, jakie parametry są domyślnie ustawione.
+- Zastanowić się, co jeszcze może robić ten program.
 
 # Perl
 -
 
 --- # Do zrobienia później
 - Uaktualnić parametr help i getopt o nowe opcje
+- Może inne parametry pobierania pogody.

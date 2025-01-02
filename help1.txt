@@ -1,8 +1,13 @@
 Opis programu
     Program pobiera dane pogodowe zgodnie z podanymi parametrami i zapisuje je w pliku wybranego formatu. 
     Dane pogodowe są pobierane przy użyciu witryny https://open-meteo.com/.
+    Uruchomienie programu bez żadnych parametrów odczyta pogodę dla: ...
 
 Obsługiwane parametry:
-    -h, --help: opis programu i dostępnych parametrów
-    -c, --city: miasto, dla którego ma byc pobrana pogoda
+    -c, --city: miasto, dla którego ma być pobrana pogoda. Dozwolone są: Kraków, Warszawa, Rzeszów, Paryż, Madryt, Oslo, Rzym, Londyn. Jeśli chcesz pobrać pogodę dla innego miasta podaj jego współrzędne geograficzne opcjami --lat i --lang
+    -d, --days: na ile dni ma być pobrana prognoza
     -f, --file: typ pliku, w którym mają być zapisane dane. Dozwolone są: json (domyślnie), csv i xlsx.
+    -h, --help: opis programu i dostępnych parametrów
+    --lat, --latitude: szerokość geograficzna, należy podać też długość geograficzną parametrem --long (--lat i --long używane są w przypadku niepodania miasta lub gdy nieznane są współrzędne danego miasta)
+    --long, --longitude: długość geograficzna, należy podać też szerokość geograficzną parametrem --lat (--lat i --long używane są w przypadku niepodania miasta lub gdy nieznane są współrzędne danego miasta)
+    -s, --silent: jeśli użyto tego parametru, to program nie wyświetli skrótowego raportu pogodowego.
