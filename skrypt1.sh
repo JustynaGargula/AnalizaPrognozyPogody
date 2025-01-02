@@ -1,5 +1,8 @@
 #!/bin/bash
 
+fileType="json" #domyślnie
+
+# Wczytanie parametrów
 args=$(getopt -o ":c:hf:" --long "city,help,file" -- "$@")
 if [ $? -ne 0 ]; then
     echo "Błąd: nieprawidłowe argumenty. Uruchom opcję --help po więcej informacji."
@@ -27,3 +30,7 @@ while true; do
     esac
     shift
 done
+
+# Pobranie danych pogodowych
+curl "https://api.open-meteo.com/v1/forecast?latitude=50.0614&longitude=19.9366&hourly=temperature_2m&forecast_days=3"
+# &format=csv <--dane w formacie csv, jest tez xlsx, a domyślny to json

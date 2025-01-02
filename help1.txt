@@ -1,7 +1,8 @@
 Opis programu
-    Program pobiera dane pogodowe zgodnie z podanymi parametrami i zapisuje je w pliku wybranego formatu.
+    Program pobiera dane pogodowe zgodnie z podanymi parametrami i zapisuje je w pliku wybranego formatu. 
+    Dane pogodowe są pobierane przy użyciu witryny https://open-meteo.com/.
 
 Obsługiwane parametry:
     -h, --help: opis programu i dostępnych parametrów
     -c, --city: miasto, dla którego ma byc pobrana pogoda
-    -f, --file: typ pliku, w którym mają być zapisane dane. Dozwolone jest: ...
+    -f, --file: typ pliku, w którym mają być zapisane dane. Dozwolone są: json (domyślnie), csv i xlsx.

@@ -1,6 +1,7 @@
 # Bash
-- Dodać pobieranie danych z API
-- Zrobić zapisywanie do pliku
+- Dodać pobieranie danych z API (uwzględniić parametry)
+- Zrobić zapisywanie do pliku (uwzględniić różne formaty)
+- Zapisać kilka wybranych lokalizacji (zapisać współrzędne dla kilku miast)
 
 # Perl
 -
