@@ -1,10 +1,9 @@
 # Bash
-1. Napisać parametr help
-2. Napisać getopt
-3. Dodać pobieranie danych z API
+- Dodać pobieranie danych z API
+- Zrobić zapisywanie do pliku
 
 # Perl
-1.
+-
 
 --- # Do zrobienia później
-1. Uaktualnić parametr help
+- Uaktualnić parametr help i getopt o nowe opcje

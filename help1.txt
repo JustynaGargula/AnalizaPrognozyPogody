@@ -1,0 +1,7 @@
+Opis programu
+    Program pobiera dane pogodowe zgodnie z podanymi parametrami i zapisuje je w pliku wybranego formatu.
+
+Obsługiwane parametry:
+    -h, --help: opis programu i dostępnych parametrów
+    -c, --city: miasto, dla którego ma byc pobrana pogoda
+    -f, --file: typ pliku, w którym mają być zapisane dane. Dozwolone jest: ...
