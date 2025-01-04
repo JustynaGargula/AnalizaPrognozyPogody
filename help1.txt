@@ -1,7 +1,7 @@
 Opis programu
-    Program pobiera dane pogodowe zgodnie z podanymi parametrami i zapisuje je w pliku wybranego formatu. 
+    Program pobiera dane pogodowe zgodnie z podanymi parametrami i zapisuje je w pliku wybranego formatu w folderze /outputData. 
     Dane pogodowe są pobierane przy użyciu witryny https://open-meteo.com/.
-    Uruchomienie programu bez żadnych parametrów odczyta pogodę dla: ...
+    Uruchomienie programu bez żadnych parametrów odczyta pogodę dla: miasta Kraków, na 3 dni i zapisze ją w formacie json.
 
 Obsługiwane parametry:
     -c, --city: miasto, dla którego ma być pobrana pogoda. Dozwolone są: Kraków, Warszawa, Rzeszów, Paryż, Madryt, Oslo, Rzym, Londyn. Jeśli chcesz pobrać pogodę dla innego miasta podaj jego współrzędne geograficzne opcjami --lat i --lang
