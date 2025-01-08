@@ -62,7 +62,12 @@ get_and_save_weather_data() {
     # zapisanie danych do pliku
     fileName="outputData/pogoda$city.$fileFormat"
     touch $fileName
-    echo $weatherData > $fileName
+    if [ $? != 0 ]; then
+        echo "Brak praw do utworzenia pliku. Dane pogodowe zostaną zamiast tego wyświetlone."
+        echo $weatherData
+    else
+        echo $weatherData > $fileName
+    fi
 }
 
 print_daily_weather() {
