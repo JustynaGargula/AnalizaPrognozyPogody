@@ -1,7 +1,6 @@
 # Bash
 - Dorobić pobieranie Weather code i dodanie odpowiednich informacji do raportu. ??
-- Obsłużyc brak uprawnień do tworzenia plików/zapisywania.
-- Ujednolicić nazewnictwo -> camel case czy inne
+- Przetestować obsługę braku uprawnień do tworzenia plików/zapisywania.
 
 # Perl
 -

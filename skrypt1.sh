@@ -3,14 +3,14 @@
 # domyślne parametry
 city="Kraków"
 days=3
-fileFormat="json"
+file_format="json"
 latitude=50.0614
 longitude=19.9366
-notSilent="true"
-multipleCities="false"
-cityList=()
+not_silent="true"
+multiple_cities="false"
+city_list=()
 
-get_city_coordinates(){
+function get_city_coordinates(){
     case "$1" in
         Kraków)
             latitude=50.0614
@@ -42,47 +42,47 @@ get_city_coordinates(){
     esac
 }
 
-get_and_save_weather_data() {
+function get_and_save_weather_data() {
     # walidacja formatu pliku
-    if [[ ! $fileFormat =~ ^(json|csv|xlsx)$ ]]; then
-        echo "Podano nieobsługiwany format pliku ($fileFormat). Zostanie zapisany plik w formacie json."
-        fileFormat="json"
+    if [[ ! $file_format =~ ^(json|csv|xlsx)$ ]]; then
+        echo "Podano nieobsługiwany format pliku ($file_format). Zostanie zapisany plik w formacie json."
+        file_format="json"
     fi
 
     # Pobranie danych pogodowych
-    url="https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=$days&format=$fileFormat"
-    weatherData=$(curl -s -w "%{http_code}" $url)
-    http_code="${weatherData: -3}"
+    url="https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=$days&format=$file_format"
+    weather_data=$(curl -s -w "%{http_code}" $url)
+    http_code="${weather_data: -3}"
     if [ $http_code -ne 200 ]; then
         echo "Nie można pobrać danych pogodowych. Sprawdź swoje połączenie z internetem."
         exit
     fi
-    weatherData=${weatherData:0:-3}
+    weather_data=${weather_data:0:-3}
 
     # zapisanie danych do pliku
-    fileName="outputData/pogoda$city.$fileFormat"
-    touch $fileName
+    file_name="outputData/pogoda$city.$file_format"
+    touch $file_name
     if [ $? != 0 ]; then
         echo "Brak praw do utworzenia pliku. Dane pogodowe zostaną zamiast tego wyświetlone."
-        echo $weatherData
+        echo $weather_data
     else
-        echo $weatherData > $fileName
+        echo $weather_data > $file_name
     fi
 }
 
-print_daily_weather() {
-    times=($(echo $weatherData | jq -r ".daily.time[]"))
-    tempsMax=($(echo $weatherData | jq -r ".daily.temperature_2m_max[]"))
-    tempsMin=($(echo $weatherData | jq -r ".daily.temperature_2m_min[]"))
-    #weatherCodes=($(echo $weatherData | jq -r ".daily.weather_code[]"))     # Czy chcę to obsługiwać? Jeśli nie to usunąć
+function print_daily_weather() {
+    times=($(echo $weather_data | jq -r ".daily.time[]"))
+    temps_max=($(echo $weather_data | jq -r ".daily.temperature_2m_max[]"))
+    temps_min=($(echo $weather_data | jq -r ".daily.temperature_2m_min[]"))
+    #weather_codes=($(echo $weather_data | jq -r ".daily.weather_code[]"))     # Czy chcę to obsługiwać? Jeśli nie to usunąć
     echo "Dane pogodowe dla miasta $city"
     for ((i=0; i<$days; i++)); do
-        echo "Dnia ${times[$i]} maksymalna temperatura wyniesie ${tempsMax[$i]} °C, a minimalna ${tempsMin[$i]} °C."
+        echo "Dnia ${times[$i]} maksymalna temperatura wyniesie ${temps_max[$i]} °C, a minimalna ${temps_min[$i]} °C."
     done
 }
 
 # początek wykonywanego kodu
-args=$(getopt -o ":c:hf:d:sm:" --long "city,help,file,lat,latitude,long,longitude,days,silent,multipleCities" -- "$@")
+args=$(getopt -o ":c:hf:d:sm:" --long "city,help,file,lat,latitude,long,longitude,days,silent,multiple_cities" -- "$@")
 if [ $? -ne 0 ]; then
     echo "Błąd: nieprawidłowe argumenty. Uruchom opcję --help po więcej informacji."
     exit 1
@@ -99,7 +99,7 @@ while true; do
             city=$2
             shift ;;
         -f|--file)
-            fileFormat=$2
+            file_format=$2
             shift ;;
         --lat|--latitude)
             latitude=$2
@@ -111,10 +111,10 @@ while true; do
             days=$2
             shift ;;
         -s|--silent)
-            notSilent="false" ;;
-        -m|--multipleCities)
-            multipleCities="true"
-            cityList=$2
+            not_silent="false" ;;
+        -m|--multiple_cities)
+            multiple_cities="true"
+            city_list=$2
             shift ;;
         --)
             shift
@@ -126,13 +126,13 @@ while true; do
     shift
 done
 
-if [ $multipleCities == "true" ]; then
+if [ $multiple_cities == "true" ]; then
     echo ""
     # dorobic pobieranie danych dla wielu miast
 else
     get_city_coordinates $city # odczytanie współrzędnych dla wybranych miast (latitude-szerokość geograficzna, longitude-długość geograficzna)
     get_and_save_weather_data
-    if [ $notSilent == "true" ]; then
+    if [ $not_silent == "true" ]; then
         print_daily_weather # wypisanie skrótu informacji (raportu pogodowego), jeśli nie podano parametru silent
     fi
 fi
