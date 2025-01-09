@@ -3,7 +3,10 @@
 - Przetestować obsługę braku uprawnień do tworzenia plików/zapisywania.
 
 # Perl
--
+- Dodać czytanie parametrów.
+- Parametr z plikami do porównania
+- Czytanie plików do porównania
+- Zacząć pisać help2.txt
 
 --- # Do zrobienia później
 - Uaktualnić parametr help i getopt o nowe opcje

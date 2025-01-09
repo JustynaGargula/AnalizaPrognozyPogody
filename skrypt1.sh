@@ -82,7 +82,7 @@ function print_daily_weather() {
 }
 
 # początek wykonywanego kodu
-args=$(getopt -o ":c:hf:d:sm:" --long "city,help,file,lat,latitude,long,longitude,days,silent,multiple_cities" -- "$@")
+args=$(getopt -o ":c:hf:d:sm:a" --long "city,help,file,lat,latitude,long,longitude,days,silent,multiple_cities,all_cities" -- "$@")
 if [ $? -ne 0 ]; then
     echo "Błąd: nieprawidłowe argumenty. Uruchom opcję --help po więcej informacji."
     exit 1
@@ -93,7 +93,7 @@ while true; do
     # Wczytanie parametrów
     case "$1" in
         --help|-h)
-            cat help1.txt
+            glow help1.md 2>/dev/null || cat help1.txt
             exit 0 ;;
         -c|--city)
             city=$2
@@ -116,6 +116,10 @@ while true; do
             multiple_cities="true"
             city_list=$2
             shift ;;
+        -a|--all_cities)
+            multiple_cities="true"
+            city_list="Kraków Warszawa Rzeszów Paryż Madryt Oslo Rzym Londyn"
+            shift ;;
         --)
             shift
             break ;;
@@ -127,7 +131,14 @@ while true; do
 done
 
 if [ $multiple_cities == "true" ]; then
-    echo ""
+    for current_city in $city_list; do
+        city=$current_city
+        get_city_coordinates $city # odczytanie współrzędnych dla wybranych miast (latitude-szerokość geograficzna, longitude-długość geograficzna)
+        get_and_save_weather_data
+        if [ $not_silent == "true" ]; then
+            print_daily_weather # wypisanie skrótu informacji (raportu pogodowego), jeśli nie podano parametru silent
+        fi
+    done
     # dorobic pobieranie danych dla wielu miast
 else
     get_city_coordinates $city # odczytanie współrzędnych dla wybranych miast (latitude-szerokość geograficzna, longitude-długość geograficzna)
