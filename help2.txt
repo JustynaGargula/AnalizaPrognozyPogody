@@ -1,0 +1,10 @@
+Opis programu:
+    Program analizuje dane pogodowe zgodnie z podanymi parametrami i zapisuje je w pliku w folderze /outputData. 
+    Dane pogodowe są odczytywane z podanych plików lub pobierane z witryny https://open-meteo.com/.
+    Uruchomienie programu bez żadnych parametrów: ...
+Wywołanie skryptu:
+    ./skrypt2.sh [parametry]
+
+Obsługiwane parametry:
+    -h, --help: 
+        opis programu i dostępnych parametrów.

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Narzędzia wymagane w programie: curl
+# Narzędzia opcjonalne: glow
+
 # domyślne parametry
 city="Kraków"
 days=3
@@ -9,6 +12,13 @@ longitude=19.9366
 not_silent="true"
 multiple_cities="false"
 city_list=()
+
+function check_necessary_commands(){
+    if ! $(curl --version &> /dev/null); then
+        echo "Do działania programu potrzebne jest narzędzie curl. Zainstaluj je poleceniem 'sudo apt install curl' lub innym dostosowanym do twojego systemu."
+        exit 0
+    fi
+}
 
 function get_city_coordinates(){
     case "$1" in
@@ -60,13 +70,19 @@ function get_and_save_weather_data() {
     weather_data=${weather_data:0:-3}
 
     # zapisanie danych do pliku
-    file_name="outputData/pogoda$city.$file_format"
-    touch $file_name
+    mkdir "outputData"
     if [ $? != 0 ]; then
-        echo "Brak praw do utworzenia pliku. Dane pogodowe zostaną zamiast tego wyświetlone."
+        echo "Brak praw do utworzenia folderu. Dane pogodowe zostaną zamiast tego wyświetlone."
         echo $weather_data
     else
-        echo $weather_data > $file_name
+        file_name="outputData/pogoda$city.$file_format"
+        touch $file_name
+        if [ $? != 0 ]; then
+            echo "Brak praw do utworzenia pliku. Dane pogodowe zostaną zamiast tego wyświetlone."
+            echo $weather_data
+        else
+            echo $weather_data > $file_name
+        fi
     fi
 }
 
@@ -82,6 +98,8 @@ function print_daily_weather() {
 }
 
 # początek wykonywanego kodu
+check_necessary_commands
+
 args=$(getopt -o ":c:hf:d:sm:a" --long "city,help,file,lat,latitude,long,longitude,days,silent,multiple_cities,all_cities" -- "$@")
 if [ $? -ne 0 ]; then
     echo "Błąd: nieprawidłowe argumenty. Uruchom opcję --help po więcej informacji."
@@ -139,7 +157,6 @@ if [ $multiple_cities == "true" ]; then
             print_daily_weather # wypisanie skrótu informacji (raportu pogodowego), jeśli nie podano parametru silent
         fi
     done
-    # dorobic pobieranie danych dla wielu miast
 else
     get_city_coordinates $city # odczytanie współrzędnych dla wybranych miast (latitude-szerokość geograficzna, longitude-długość geograficzna)
     get_and_save_weather_data
