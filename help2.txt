@@ -21,3 +21,5 @@ Obsługiwane parametry:
         Należy podać nazwy tych plików w cudzysłowie oddzielone spacją. 
         Pliki musza znajdować się w katalogu outputData. 
         Przykład "pogodaWarszawa.json pogodaKraków.json".
+Przykład użycia:
+    ./skrypt2.pl -c "pogodaKraków.json"
