@@ -7,8 +7,8 @@
 city="Kraków"
 days=3
 file_format="json"
-latitude=50.0614
-longitude=19.9366
+latitude=50.064266
+longitude=19.923676
 not_silent="true"
 multiple_cities="false"
 city_list=()
@@ -23,29 +23,29 @@ function check_necessary_commands(){
 function get_city_coordinates(){
     case "$1" in
         Kraków)
-            latitude=50.0614
-            longitude=19.9366 ;;
+            latitude=50.064266
+            longitude=19.923676 ;;
         Warszawa)
-            latitude=52.2298
-            longitude=21.0118 ;;
+            latitude=52.23009
+            longitude=21.017075 ;;
         Rzeszów)
-            latitude=50.0413
-            longitude=21.999 ;;
+            latitude=50.03909
+            longitude=22.010834 ;;
         Paryż)
-            latitude=48.8534
-            longitude=2.3488 ;;
+            latitude=48.86
+            longitude=2.3399997 ;;
         Madryt)
-            latitude=40.4165
-            longitude=-3.7026 ;;
+            latitude=40.4375
+            longitude=-3.6875 ;;
         Oslo)
-            latitude=59.9127
-            longitude=10.7461 ;;
+            latitude=59.915257
+            longitude=10.742905 ;;
         Rzym)
-            latitude=41.8919
-            longitude=12.5113 ;;
+            latitude=41.875
+            longitude=12.5 ;;
         Londyn)
-            latitude=51.5085
-            longitude=-0.1257 ;;
+            latitude=51.5
+            longitude=-0.120000124 ;;
         *)
             city=""
             echo "Podano nieznane miasto ($city). Zostają pobrane dane dla domyślnych wartości lub innych współrzędnych geograficznych, jeśli je podano." ;;
@@ -70,7 +70,9 @@ function get_and_save_weather_data() {
     weather_data=${weather_data:0:-3}
 
     # zapisanie danych do pliku
-    mkdir "outputData"
+    if [ ! -d "outputData" ]; then
+        mkdir "outputData"
+    fi
     if [ $? != 0 ]; then
         echo "Brak praw do utworzenia folderu. Dane pogodowe zostaną zamiast tego wyświetlone."
         echo $weather_data
@@ -136,8 +138,7 @@ while true; do
             shift ;;
         -a|--all_cities)
             multiple_cities="true"
-            city_list="Kraków Warszawa Rzeszów Paryż Madryt Oslo Rzym Londyn"
-            shift ;;
+            city_list="Kraków Warszawa Rzeszów Paryż Madryt Oslo Rzym Londyn" ;;
         --)
             shift
             break ;;
