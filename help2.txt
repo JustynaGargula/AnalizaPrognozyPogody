@@ -8,3 +8,8 @@ Wywołanie skryptu:
 Obsługiwane parametry:
     -h, --help: 
         opis programu i dostępnych parametrów.
+    -m, --multiple_cities <lista_plików>:
+        oznacza, że zostaną porównane dane z wielu plików. Należy podać nazwy tych plików w cudzysłowie oddzielone spacją.
+    -f, --file_format <format_pliku>:
+        typ pliku, w którym mają być zapisane dane.  
+        Dozwolone są: json (domyślnie), csv i xlsx.
