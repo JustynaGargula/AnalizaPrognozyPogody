@@ -6,6 +6,7 @@
 - wbudowane generowanie danych z basha
 - obsługę braku modułów potrzebnych (JSON...)
 - TODOs
+- obsługa innych formatów plików
 
 --- # Do zrobienia później
 - Uaktualnić parametr help i getopt o nowe opcje

@@ -8,6 +8,9 @@ use JSON;
 my $multiple="false";
 my $file_format="json";
 my @files;
+my $city_file;
+my $generate_forecast="false";
+my @cities_to_generate;
 
 sub get_city_from_coordinates {
     my ($latitude, $longitude) = @_;
@@ -47,19 +50,33 @@ for (my $i=0; $i<@ARGV; $i++){
         $multiple="true";
         @files=split / /, $ARGV[$i+1]; 
         $i++;
+    } elsif ($ARGV[$i] eq '-c' || $ARGV[$i] eq '--city_file') {
+        $city_file=$ARGV[$i+1];
+        $i++;
     } elsif ($ARGV[$i] eq '-f' || $ARGV[$i] eq '--file_format') {
         $file_format=$ARGV[$i+1];
+        $i++;
+    } elsif ($ARGV[$i] eq '-g' || $ARGV[$i] eq '--generate_forecast') {
+        $generate_forecast="true";
+        @cities_to_generate=$ARGV[$i+1];
         $i++;
     } else {
         print "Nieznany argument: $ARGV[$i]\n";
     }
 }
 
-my @max_temperature=(-100, "", ""); # przechowa temperaturę, miasto i datę
-my @min_temperature=(100, "", ""); # przechowa temperaturę, miasto i datę
-my %weather_codes_counts;
+if($generate_forecast eq "true"){
+    my @cities=split / /, @cities_to_generate;
+    foreach my $city (@cities){
+        system("./skrypt1.sh -c $city -s");
+    }
+}
+
 # odczytuję wybrane dane z plików i je analizuję
-if($multiple eq "true"){
+if($multiple eq "true" && $file_format eq "json"){
+    my @max_temperature=(-100, "", ""); # przechowa temperaturę, miasto i datę
+    my @min_temperature=(100, "", ""); # przechowa temperaturę, miasto i datę
+    my %weather_codes_counts;
     # dla każdego pliku z listy: odczytać dane z jsona, porównać z danymi w zmiennych
     foreach my $file_name (@files){
         open my $file, "<", "outputData/$file_name" or next;
@@ -94,5 +111,30 @@ if($multiple eq "true"){
 
     #TODO wyświetlić najczęstszy kod pogodowy i jego interpretację
 } else {
-    #TODO analiza danych dla jednego miasta
+    open my $file, "<", "outputData/$city_file" or print "Nie można odczytać pliku; $city_file.\n";
+        my $json_text = do { local $/; <$file> };
+    close $file;
+    my $data = decode_json($json_text);
+    my @max_temperature=(-100, ""); # temperatura, data
+    my @min_temperature=(100, "");
+    my @temperatures = @{$data->{hourly}->{temperature_2m}};
+    for (my $i=0; $i<@temperatures; $i++){
+        my $temperature = $temperatures[$i];
+        my $date = @{$data->{hourly}->{time}}[$i];
+        if($temperature > $max_temperature[0]){
+            @max_temperature = ($temperature, $date);
+        }
+        if($temperature < $min_temperature[0]){
+            @min_temperature = ($temperature, $date);
+        }
+    }
+    if(defined $max_temperature[1] && $max_temperature[1] ne ""){
+        print "Porównano dane. Z ich analizy wynika, że:\n";
+        my @date_max=split /T/, $max_temperature[1];
+        my @date_min=split /T/, $min_temperature[1];
+        print "najwyższa temperatura będzie " . $date_max[0] . " o " . $date_max[1] . " i wyniesie ona " . $max_temperature[0] . "°C,\n";
+        print "najniższa temperatura będzie " . $date_min[0] . " o " . $date_min[1] . " i wyniesie ona " . $min_temperature[0] . "°C.\n";
+    } else {
+        print "Nie można było odczytać plików z listy\n"
+    }
 }

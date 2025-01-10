@@ -6,10 +6,18 @@ Wywołanie skryptu:
     ./skrypt2.sh [parametry]
 
 Obsługiwane parametry:
+    -c, --city_file <file_name>:
+        program porówna dane tylko z tego pliku.
+    -f, --file_format <format_pliku>:
+        typ pliku, w którym mają być zapisane dane.  
+        Dozwolone są: json (domyślnie), csv i xlsx. Uwaga! Obecnie obsługiwany jest tylko json!
+    -g, --generate_forecast <lista_miast>:
+        Wygeneruje pliki z programu w bashu dla podanej listy miast. 
+        Należy podać nazwy miast w cudzysłowie oddzielone spacją.
     -h, --help: 
         opis programu i dostępnych parametrów.
     -m, --multiple_cities <lista_plików>:
-        oznacza, że zostaną porównane dane z wielu plików. Należy podać nazwy tych plików w cudzysłowie oddzielone spacją.
-    -f, --file_format <format_pliku>:
-        typ pliku, w którym mają być zapisane dane.  
-        Dozwolone są: json (domyślnie), csv i xlsx.
+        oznacza, że zostaną porównane dane z wielu plików. 
+        Należy podać nazwy tych plików w cudzysłowie oddzielone spacją. 
+        Pliki musza znajdować się w katalogu outputData. 
+        Przykład "pogodaWarszawa.json pogodaKraków.json".
