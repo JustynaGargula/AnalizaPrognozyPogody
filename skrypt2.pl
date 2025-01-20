@@ -52,26 +52,40 @@ sub create_plot {
     } else {
         $city="?";
     }
-    my @data = (\@{$json_data->{hourly}->{time}}, \@{$json_data->{hourly}->{temperature_2m}});
+    my @time = @{$json_data->{hourly}->{time}};
+    my @temperatures = @{$json_data->{hourly}->{temperature_2m}};
+    my @data = (\@time, \@temperatures);
+    for (my $i=0; $i<@time; $i++){
+        my @temp_time=split /T/,$time[$i];
+        $time[$i]=$temp_time[0] . " o " . $temp_time[1];
+    }
+    my $start_date=$time[0];
+    my $last_date=$time[@time-1];
+
     my $graph = GD::Graph::lines->new(600, 400);
     $graph->set_title_font('/fonts/arial.ttf', 18);
     $graph->set_legend_font('/fonts/arial.ttf', 12);
-    $graph->set( title => "Pogoda w $city",
+    $graph->set( title => "Pogoda $city od $start_date do $last_date",
                 y_label => "Temperatura",
                 x_label => "Data",
                 bgclr => "white",
                 transparent => 0,
                 x_labels_vertical => 1,
                 x_label_skip    => 3,
+                fgclr => "gray",
                 ) or die $graph->error;
 
     my $gd = $graph->plot(\@data) or die $graph->error;
-    open(IMG, '>file.png') or die $!;
+    open(IMG, ">outputData/file$city.png") or die $!;
     binmode IMG;
     print IMG $gd->png;
     close IMG;
 }
-
+if(@ARGV==0){
+    $generate_forecast="true";
+    @cities_to_generate="Kraków Warszawa";
+    $city_file="pogodaKraków.json";
+}
 # Czytanie argumentów początkowych
 for (my $i=0; $i<@ARGV; $i++){
     if ($ARGV[$i] eq '-h' || $ARGV[$i] eq '--help') {
@@ -98,8 +112,8 @@ for (my $i=0; $i<@ARGV; $i++){
 }
 
 if($generate_forecast eq "true"){
-    my @cities=split / /, @cities_to_generate;
-    foreach my $city (@cities){
+    foreach (my $i=0; $i<@cities_to_generate; $i++){
+        my $city=$cities_to_generate[$i];
         system("./skrypt1.sh -c $city -s");
     }
 }
@@ -131,6 +145,7 @@ if($multiple eq "true" && $file_format eq "json"){
                 @min_temperature  = ($temperature, get_city_from_coordinates($latitude, $longitude), $day);
             }
         }
+        create_plot($data, $file_name);
     }
     if(defined $max_temperature[2] && $max_temperature[2] ne ""){
         print "Porównano dane. Z ich analizy wynika, że:\n";

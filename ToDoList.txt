@@ -3,11 +3,11 @@
 - Przetestować obsługę braku uprawnień do tworzenia plików/zapisywania.
 
 # Perl
-- wbudowane generowanie danych z basha
+- wbudowane generowanie danych z basha -> dodać liste miast?
 - obsługę braku modułów potrzebnych (JSON...)
 - TODOs
 - obsługa innych formatów plików
-- domyślne działanie bez parametrów
+- domyślne działanie bez parametrów --> opisać
 
 --- # Do zrobienia później
 - Uaktualnić parametr help i getopt o nowe opcje
