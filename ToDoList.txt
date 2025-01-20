@@ -7,6 +7,7 @@
 - obsługę braku modułów potrzebnych (JSON...)
 - TODOs
 - obsługa innych formatów plików
+- domyślne działanie bez parametrów
 
 --- # Do zrobienia później
 - Uaktualnić parametr help i getopt o nowe opcje

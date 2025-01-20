@@ -2,8 +2,12 @@
 use strict;
 use warnings;
 use JSON;
+use GD::Graph::lines;
+use utf8;
+binmode STDOUT, ':encoding(UTF-8)';
 
-# Wymagane narzędzia: JSON
+
+# Wymagane narzędzia: JSON, GD (może wymagać innych narzędzi do instalacji)
 
 my $multiple="false";
 my $file_format="json";
@@ -38,6 +42,34 @@ if ($latitude == 50.064266 && $longitude == 19.923676) {
 }
 
     return $city;
+}
+
+sub create_plot {
+    my ($json_data, $file_name)=@_;
+    my $city;
+    if ($file_name =~ /pogoda(.*?)\./) {
+        $city = $1;
+    } else {
+        $city="?";
+    }
+    my @data = (\@{$json_data->{hourly}->{time}}, \@{$json_data->{hourly}->{temperature_2m}});
+    my $graph = GD::Graph::lines->new(600, 400);
+    $graph->set_title_font('/fonts/arial.ttf', 18);
+    $graph->set_legend_font('/fonts/arial.ttf', 12);
+    $graph->set( title => "Pogoda w $city",
+                y_label => "Temperatura",
+                x_label => "Data",
+                bgclr => "white",
+                transparent => 0,
+                x_labels_vertical => 1,
+                x_label_skip    => 3,
+                ) or die $graph->error;
+
+    my $gd = $graph->plot(\@data) or die $graph->error;
+    open(IMG, '>file.png') or die $!;
+    binmode IMG;
+    print IMG $gd->png;
+    close IMG;
 }
 
 # Czytanie argumentów początkowych
@@ -98,7 +130,6 @@ if($multiple eq "true" && $file_format eq "json"){
                 my $day = @{$data->{daily}->{time}}[$i];
                 @min_temperature  = ($temperature, get_city_from_coordinates($latitude, $longitude), $day);
             }
-            #TODO odczytać weather_code i doliczyć do tablicy
         }
     }
     if(defined $max_temperature[2] && $max_temperature[2] ne ""){
@@ -109,7 +140,6 @@ if($multiple eq "true" && $file_format eq "json"){
         print "Nie można było odczytać plików z listy\n"
     }
 
-    #TODO wyświetlić najczęstszy kod pogodowy i jego interpretację
 } else {
     open my $file, "<", "outputData/$city_file" or print "Nie można odczytać pliku; $city_file.\n";
         my $json_text = do { local $/; <$file> };
@@ -137,4 +167,5 @@ if($multiple eq "true" && $file_format eq "json"){
     } else {
         print "Nie można było odczytać plików z listy\n"
     }
+    create_plot($data, $city_file);
 }
