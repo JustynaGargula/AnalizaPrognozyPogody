@@ -3,8 +3,8 @@ use strict;
 use warnings;
 use JSON;
 use GD::Graph::lines;
-use utf8;
-binmode STDOUT, ':encoding(UTF-8)';
+# use utf8;
+# binmode STDOUT, ':encoding(UTF-8)';
 
 
 # Wymagane narzędzia: JSON, GD (może wymagać innych narzędzi do instalacji)
@@ -83,7 +83,7 @@ sub create_plot {
 }
 if(@ARGV==0){
     $generate_forecast="true";
-    @cities_to_generate="Kraków Warszawa";
+    @cities_to_generate="Kraków";
     $city_file="pogodaKraków.json";
 }
 # Czytanie argumentów początkowych
@@ -104,7 +104,7 @@ for (my $i=0; $i<@ARGV; $i++){
         $i++;
     } elsif ($ARGV[$i] eq '-g' || $ARGV[$i] eq '--generate_forecast') {
         $generate_forecast="true";
-        @cities_to_generate=$ARGV[$i+1];
+        @cities_to_generate=split(" ",$ARGV[$i+1]);
         $i++;
     } else {
         print "Nieznany argument: $ARGV[$i]\n";
@@ -112,9 +112,11 @@ for (my $i=0; $i<@ARGV; $i++){
 }
 
 if($generate_forecast eq "true"){
+    $multiple="true";
     foreach (my $i=0; $i<@cities_to_generate; $i++){
         my $city=$cities_to_generate[$i];
         system("./skrypt1.sh -c $city -s");
+        push @files, "pogoda$city.$file_format";
     }
 }
 

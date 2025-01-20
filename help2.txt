@@ -1,16 +1,17 @@
 Opis programu:
     Program analizuje dane pogodowe zgodnie z podanymi parametrami i zapisuje je w pliku w folderze /outputData. 
     Dane pogodowe są odczytywane z podanych plików lub pobierane z witryny https://open-meteo.com/.
-    Uruchomienie programu bez żadnych parametrów: ...
+    Uruchomienie programu bez żadnych parametrów: pobierze i przeanalizuje dane dla Krakowa. Jest to równoważne uruchomieniu
+    ./skrypt2.pl -g "Kraków" -c "pogodaKraków.json" -f json
 Wywołanie skryptu:
-    ./skrypt2.sh [parametry]
+    ./skrypt2.pl [parametry]
 
 Obsługiwane parametry:
     -c, --city_file <file_name>:
         program porówna dane tylko z tego pliku.
     -f, --file_format <format_pliku>:
         typ pliku, w którym mają być zapisane dane.  
-        Dozwolone są: json (domyślnie), csv i xlsx. Uwaga! Obecnie obsługiwany jest tylko json!
+        Dozwolone są: json (domyślnie). Uwaga! Obecnie obsługiwany jest tylko json!
     -g, --generate_forecast <lista_miast>:
         Wygeneruje pliki z programu w bashu dla podanej listy miast. 
         Należy podać nazwy miast w cudzysłowie oddzielone spacją.
